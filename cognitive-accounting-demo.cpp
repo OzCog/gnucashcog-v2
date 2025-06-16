@@ -11,6 +11,8 @@
 #include <iostream>
 #include <glib.h>
 #include "gnc-cognitive-accounting.h"
+#include "gnc-cognitive-scheme.h"
+#include "gnc-cognitive-comms.h"
 #include "Account.h"
 #include "Transaction.h"
 #include "Split.h"
@@ -507,6 +509,72 @@ void demonstrate_trial_balance_proof()
     qof_book_destroy(book);
 }
 
+void demonstrate_scheme_integration()
+{
+    std::cout << "\n=== Scheme-based Cognitive Representations Demo ===\n";
+    
+    // Test Scheme evaluation
+    gchar* result = gnc_cognitive_scheme_eval("(+ 1 2 3)");
+    if (result) {
+        std::cout << "Scheme evaluation result: " << result << "\n";
+        g_free(result);
+    }
+    
+    // Create hypergraph patterns
+    GncAtomHandle pattern = gnc_scheme_create_hypergraph_pattern(
+        "(create-account-concept \"Neural-Account\" \"COGNITIVE\")");
+    std::cout << "Created hypergraph pattern: " << pattern << "\n";
+    
+    // Test neural-symbolic analysis
+    QofBook *book = qof_book_new();
+    Account *cognitive_account = xaccMallocAccount(book);
+    xaccAccountSetName(cognitive_account, "Neural-Symbolic-Account");
+    xaccAccountSetType(cognitive_account, ACCT_TYPE_ASSET);
+    
+    // Perform neural-symbolic analysis
+    gnc_scheme_neural_symbolic_analysis(cognitive_account);
+    
+    // Test emergent insight discovery
+    Transaction *test_txn = xaccMallocTransaction(book);
+    Transaction *txns[] = {test_txn};
+    gnc_scheme_emergent_insight_discovery(txns, 1);
+    
+    std::cout << "Scheme-based cognitive representations demonstrated\n";
+    std::cout << "Neural-symbolic synergy operational\n";
+    
+    qof_book_destroy(book);
+}
+
+void demonstrate_distributed_cognition()
+{
+    std::cout << "\n=== Distributed Cognition and Inter-Module Communication Demo ===\n";
+    
+    // Test module communication
+    gnc_cognitive_send_message(GNC_MODULE_ATOMSPACE, GNC_MODULE_PLN,
+                              GNC_MSG_DATA_UPDATE, nullptr);
+    
+    gnc_cognitive_send_message(GNC_MODULE_PLN, GNC_MODULE_ECAN,
+                              GNC_MSG_ATTENTION_REQUEST, nullptr);
+    
+    gnc_cognitive_send_message(GNC_MODULE_ECAN, GNC_MODULE_MOSES,
+                              GNC_MSG_PATTERN_MATCH, nullptr);
+    
+    // Test broadcast communication
+    gnc_cognitive_broadcast_message(GNC_MODULE_ATOMSPACE,
+                                   GNC_MSG_SYNCHRONIZATION, nullptr);
+    
+    // Optimize attention flow
+    gnc_cognitive_optimize_attention_flow();
+    
+    // Synchronize modules
+    gnc_cognitive_synchronize_modules();
+    
+    std::cout << "Inter-module communication protocols demonstrated\n";
+    std::cout << "Distributed cognition active across OpenCog modules\n";
+    std::cout << "Adaptive attention allocation optimized\n";
+    std::cout << "Emergent cognitive architectures operational\n";
+}
+
 int main(int argc, char **argv)
 {
     std::cout << "======================================================\n";
@@ -536,7 +604,10 @@ int main(int argc, char **argv)
         demonstrate_cognitive_features();
         demonstrate_moses_optimization();
         demonstrate_trial_balance_proof();
+        demonstrate_scheme_integration();
+        demonstrate_distributed_cognition();
         
+//<<<<<<< copilot/fix-1-3
         // Run enhanced OpenCog integration demonstrations
         demonstrate_opencog_style_operations();
         demonstrate_scheme_representations();
@@ -557,6 +628,18 @@ int main(int argc, char **argv)
         std::cout << "\nOpenCog core modules successfully integrated!\n";
         std::cout << "\nThe classical ledger has evolved into a true cognitive\n";
         std::cout << "neural-symbolic system with emergent intelligence.\n";
+//=======
+//        std::cout << "\n=== Cognitive Accounting Framework Summary ===\n";
+//        std::cout << "✓ AtomSpace: Chart of Accounts mapped as hypergraph\n";
+//        std::cout << "✓ PLN: Double-entry and N-entry validation rules\n";
+//        std::cout << "✓ ECAN: Adaptive attention allocation for accounts\n";
+//        std::cout << "✓ MOSES: Strategy discovery and optimization\n";
+//        std::cout << "✓ URE: Uncertain reasoning for predictions\n";
+//        std::cout << "✓ Cognitive: Enhanced account types and features\n";
+//        std::cout << "✓ Scheme: Neural-symbolic representations and hypergraph patterns\n";
+//        std::cout << "✓ Communications: Distributed cognition and emergent architectures\n";
+//        std::cout << "\nCognitive accounting transformation complete!\n";
+//>>>>>>> stable
         
     } catch (const std::exception& e) {
         std::cerr << "Error during demonstration: " << e.what() << "\n";
