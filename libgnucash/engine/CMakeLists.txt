@@ -55,6 +55,8 @@ set (engine_HEADERS
   gnc-aqbanking-templates.h
   gnc-budget.h
   gnc-cognitive-accounting.h
+  gnc-cognitive-scheme.h
+  gnc-cognitive-comms.h
   gnc-commodity.h
   gnc-commodity.hpp
   gnc-date.h
@@ -157,6 +159,8 @@ set (engine_SOURCES
   gnc-aqbanking-templates.cpp
   gnc-budget.cpp
   gnc-cognitive-accounting.cpp
+  gnc-cognitive-scheme.cpp
+  gnc-cognitive-comms.cpp
   gnc-commodity.cpp
   gnc-date.cpp
   gnc-datetime.cpp

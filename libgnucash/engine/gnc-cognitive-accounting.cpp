@@ -14,6 +14,8 @@
  *********************************************************************/
 
 #include "gnc-cognitive-accounting.h"
+#include "gnc-cognitive-scheme.h"
+#include "gnc-cognitive-comms.h"
 #include "Account.h"
 #include "Split.h"
 #include "Transaction.h"
@@ -212,6 +214,28 @@ gboolean gnc_cognitive_accounting_init(void)
         g_warning("CogServer initialization failed: %s", e.what());
     }
 #endif
+
+    // Initialize Scheme-based cognitive representations
+    if (!gnc_cognitive_scheme_init()) {
+        g_warning("Failed to initialize Scheme cognitive interface");
+    }
+    
+    // Initialize inter-module communication protocols
+    if (!gnc_cognitive_comms_init()) {
+        g_warning("Failed to initialize cognitive communication hub");
+    }
+    
+    // Register core modules with communication hub
+    gnc_cognitive_register_module(GNC_MODULE_ATOMSPACE);
+    gnc_cognitive_register_module(GNC_MODULE_PLN);
+    gnc_cognitive_register_module(GNC_MODULE_ECAN);
+    gnc_cognitive_register_module(GNC_MODULE_MOSES);
+    gnc_cognitive_register_module(GNC_MODULE_URE);
+    gnc_cognitive_register_module(GNC_MODULE_SCHEME);
+    
+#ifdef HAVE_OPENCOG_COGSERVER
+    gnc_cognitive_register_module(GNC_MODULE_COGSERVER);
+#endif
     
     g_message("Cognitive accounting framework initialized with OpenCog integration");
     return TRUE;
@@ -223,6 +247,9 @@ void gnc_cognitive_accounting_shutdown(void)
         g_warning("Cognitive accounting not initialized");
         return;
     }
+    
+    // Shutdown communication protocols
+    gnc_cognitive_comms_shutdown();
     
     g_atomspace.reset();
     g_message("Cognitive accounting AtomSpace shutdown");
@@ -254,6 +281,9 @@ GncAtomHandle gnc_account_to_atomspace(const Account *account)
     
     // Store mapping
     g_atomspace->account_atoms[account] = atom_handle;
+    
+    // Register Scheme-based hypergraph patterns
+    gnc_scheme_register_account_patterns(const_cast<Account*>(account));
     
     // Create category atom based on account type
     GNCAccountType acct_type = xaccAccountGetType(account);
@@ -506,6 +536,9 @@ void gnc_ecan_update_account_attention(Account *account,
     // Increase importance for frequently used accounts
     params.importance = std::min(1.0, params.importance + 0.02);
     
+    // Trigger Scheme-based attention update for neural-symbolic synergy
+    gnc_scheme_trigger_attention_update(account, params.activity_level);
+    
     g_debug("Updated attention for account %s: importance=%.3f, attention=%.3f",
             xaccAccountGetName(account), params.importance, params.attention_value);
 }
@@ -622,6 +655,9 @@ GncAtomHandle gnc_moses_discover_balancing_strategies(Transaction **historical_t
 #else
     g_atomspace->attention_params[strategy_atom].confidence = 0.7;
 #endif
+    
+    // Trigger Scheme-based evolutionary optimization for distributed cognition
+    gnc_scheme_evolutionary_optimization(historical_transactions, n_transactions);
     
     g_message("MOSES discovered balancing strategies from %d transactions (basic implementation)", n_transactions);
 #endif
