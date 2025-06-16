@@ -575,6 +575,84 @@ void demonstrate_distributed_cognition()
     std::cout << "Emergent cognitive architectures operational\n";
 }
 
+void demonstrate_enhanced_cognitive_features()
+{
+    std::cout << "\n=== Enhanced Cognitive Accounting Features Demo ===\n";
+    
+    QofBook *book = qof_book_new();
+    
+    // Create diverse account types with different cognitive behaviors
+    Account *adaptive_checking = xaccMallocAccount(book);
+    xaccAccountSetName(adaptive_checking, "Adaptive Checking");
+    xaccAccountSetType(adaptive_checking, ACCT_TYPE_CHECKING);
+    gnc_account_set_cognitive_type(adaptive_checking, GNC_COGNITIVE_ACCT_ADAPTIVE);
+    
+    Account *predictive_investment = xaccMallocAccount(book);
+    xaccAccountSetName(predictive_investment, "Predictive Investment");
+    xaccAccountSetType(predictive_investment, ACCT_TYPE_STOCK);
+    gnc_account_set_cognitive_type(predictive_investment, 
+        static_cast<GncCognitiveAccountType>(GNC_COGNITIVE_ACCT_PREDICTIVE | GNC_COGNITIVE_ACCT_ATTENTION));
+    
+    std::cout << "Created accounts with enhanced cognitive types:\n";
+    std::cout << "  - Adaptive Checking (learns from transaction patterns)\n";
+    std::cout << "  - Predictive Investment (forecasting capabilities with high attention)\n\n";
+    
+    // Create complex transaction for testing
+    Transaction *complex_txn = xaccMallocTransaction(book);
+    xaccTransBeginEdit(complex_txn);
+    
+    Split *split1 = xaccMallocSplit(book);
+    xaccSplitSetAccount(split1, adaptive_checking);
+    xaccSplitSetAmount(split1, gnc_numeric_create(-100000, 100));
+    xaccSplitSetParent(split1, complex_txn);
+    
+    Split *split2 = xaccMallocSplit(book);
+    xaccSplitSetAccount(split2, predictive_investment);
+    xaccSplitSetAmount(split2, gnc_numeric_create(100000, 100));
+    xaccSplitSetParent(split2, complex_txn);
+    
+    xaccTransCommitEdit(complex_txn);
+    
+    // Test enhanced PLN validation
+    std::cout << "Enhanced PLN validation with multi-factor analysis:\n";
+    gdouble enhanced_validation = gnc_pln_validate_double_entry(complex_txn);
+    std::cout << "  Transaction validation confidence: " << enhanced_validation << "\n";
+    
+    // Test URE reasoning
+    std::cout << "\nURE uncertain reasoning:\n";
+    time64 future_date = gnc_time(nullptr) + (30 * 24 * 3600); // 30 days ahead
+    gnc_numeric predicted_balance = gnc_ure_predict_balance(predictive_investment, future_date);
+    std::cout << "  Predicted balance: " << gnc_numeric_to_double(predicted_balance) << "\n";
+    
+    gdouble transaction_validity = gnc_ure_transaction_validity(complex_txn);
+    std::cout << "  Transaction validity assessment: " << transaction_validity << "\n";
+    
+    // Test ECAN attention allocation
+    gnc_ecan_update_account_attention(adaptive_checking, complex_txn);
+    gnc_ecan_update_account_attention(predictive_investment, complex_txn);
+    
+    // Test adaptive learning
+    gnc_account_adapt_cognitive_behavior(adaptive_checking, complex_txn);
+    
+    std::cout << "\nCognitive account behaviors:\n";
+    Account* accounts[] = {adaptive_checking, predictive_investment};
+    for (int i = 0; i < 2; i++) {
+        std::cout << "  " << xaccAccountGetName(accounts[i]) << ":\n";
+        
+        if (gnc_account_has_cognitive_behavior(accounts[i], GNC_COGNITIVE_ACCT_ADAPTIVE)) {
+            std::cout << "    ✓ Has adaptive learning behavior\n";
+        }
+        if (gnc_account_has_cognitive_behavior(accounts[i], GNC_COGNITIVE_ACCT_PREDICTIVE)) {
+            std::cout << "    ✓ Has predictive capabilities\n";
+        }
+        if (gnc_account_has_cognitive_behavior(accounts[i], GNC_COGNITIVE_ACCT_ATTENTION)) {
+            std::cout << "    ✓ Has attention-driven processing\n";
+        }
+    }
+    
+    qof_book_destroy(book);
+}
+
 int main(int argc, char **argv)
 {
     std::cout << "======================================================\n";
@@ -614,6 +692,7 @@ int main(int argc, char **argv)
         demonstrate_cognitive_messaging();
         demonstrate_emergent_behavior();
         demonstrate_enhanced_ecan();
+        demonstrate_enhanced_cognitive_features();  // New comprehensive demo
         
         std::cout << "\n=== Enhanced Cognitive Accounting Framework Summary ===\n";
         std::cout << "✓ AtomSpace: OpenCog-style hypergraph with ConceptNodes and Links\n";
